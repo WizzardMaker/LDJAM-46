@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour {
 
 			revolver.FireGun();
 
-			if (revolver.bullets < 0)
+			if (revolver.bullets <= 0)
 				revolver.Reload();
 		}
 	}

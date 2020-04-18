@@ -27,6 +27,6 @@ public class SpeedHandle : MonoBehaviour
 			finalAngle = handleAngle;
 			break;
 		}
-		handlePivot.rotation = Quaternion.Lerp(handlePivot.rotation, Quaternion.Euler(Vector3.right * finalAngle), Time.deltaTime  *5);
+		handlePivot.localRotation = Quaternion.Lerp(handlePivot.localRotation, Quaternion.Euler(Vector3.right * finalAngle), Time.deltaTime  *5);
     }
 }

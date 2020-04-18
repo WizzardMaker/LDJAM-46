@@ -14,18 +14,18 @@ public class Revolver : MonoBehaviour {
 
 	public AnimationCurve shot;
 
-	public bool canFire = true;
+	public bool canFire = true, isColliding = false;
 
 	// Start is called before the first frame update
 	void Start() {
 		bullets = 6;
     }
 
-    // Update is called once per frame
-    void Update() {
+    void LateUpdate() {
+		//isColliding = false;
+	}
 
-    }
-
+	#region Animations
 	public IEnumerator FireAnimation() {
 		canFire = false;
 
@@ -85,9 +85,10 @@ public class Revolver : MonoBehaviour {
 
 		canFire = true;
 	}
+	#endregion
 
 	public void FireGun() {
-		if (!canFire)
+		if (!canFire || isColliding)
 			return;
 
 		if(bullets <= 0) {
@@ -100,7 +101,7 @@ public class Revolver : MonoBehaviour {
 		GameObject bullet = Instantiate(bulletPrefab);
 
 		bullet.transform.position = bulletSpawnPos.transform.position;
-		bullet.transform.rotation = Quaternion.LookRotation(lookAtPos- bulletSpawnPos.transform.position );
+		bullet.transform.LookAt(lookAtPos);// = Quaternion.LookRotation(- bulletSpawnPos.transform.position );
 
 		StartCoroutine(FireAnimation());
 	}
@@ -114,5 +115,14 @@ public class Revolver : MonoBehaviour {
 			return;
 
 		StartCoroutine(ReloadAnimation());
+	}
+
+	private void OnTriggerEnter(Collider other) {
+		isColliding = true;
+		Debug.Log("Ahh");
+	}
+	private void OnTriggerExit(Collider other) {
+		isColliding = false;
+		Debug.Log("Phew");
 	}
 }

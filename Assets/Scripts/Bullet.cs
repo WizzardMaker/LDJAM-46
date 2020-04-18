@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour {
 	public float lifetime = 8;
 	public float timer;
 
+	public bool isPlayerFired = false;
+
     // Start is called before the first frame update
     void Start() {
 		c = GetComponentInChildren<Collider>();
@@ -33,7 +35,7 @@ public class Bullet : MonoBehaviour {
 		transform.position += transform.forward * speed * Time.deltaTime;
 
 		if(Physics.Raycast(transform.position, transform.forward,out RaycastHit info, speed * Time.deltaTime * 2, GetLayerMask())) {
-			Hit(info.collider);
+			Hit(info.collider, info.point);
 		}
 
 		if(Time.time > timer) {
@@ -41,11 +43,18 @@ public class Bullet : MonoBehaviour {
 		}
     }
 
-	private void Hit(Collider collider) {
+	private void Hit(Collider collider, Vector3 hitPos) {
 		Debug.Log($"Hit! Collider: {collider.gameObject.name}");
 
 		Destroyable a = collider.GetComponentInParent<Destroyable>();
 		a?.BulletHit();
+
+		PlayerController p = collider.GetComponentInParent<PlayerController>();
+		p?.BulletHit(hitPos);
+
+		if(a != null) {
+			PlayerController.instance.HasHitTarget();
+		}
 
 		Destroy(gameObject);
 	}

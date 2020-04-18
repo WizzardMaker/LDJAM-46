@@ -537,7 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b15cfd4fa13c34cb98b53acdf873d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7597851280593806108, guid: 3623572b64d1f61499595cd4637013da,
+  bulletPrefab: {fileID: 7597851280593806108, guid: d598f0582b1a968498b6bdd3abfd929e,
     type: 3}
   bulletSpawnPos: {fileID: 6740758671310294850}
   clickSound: {fileID: 0}
@@ -545,6 +545,13 @@ MonoBehaviour:
   bullets: 6
   maxBullets: 6
   lookAtPos: {x: 0, y: 0, z: 0}
+  shot:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  canFire: 1
 --- !u!1 &6740758672169249252
 GameObject:
   m_ObjectHideFlags: 0

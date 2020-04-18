@@ -21,9 +21,12 @@ public class TrainController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-		fuel -= (TrainSpeed == World.TrainSpeedSetting.Fast ? fuelConsOnFast : fuelConsumption) * Time.deltaTime;
+		if(TrainSpeed != World.TrainSpeedSetting.Stop)
+			fuel -= (TrainSpeed == World.TrainSpeedSetting.Fast ? fuelConsOnFast : fuelConsumption) * Time.deltaTime;
 
-		if(fuel <= 0) {
+		fuel = Mathf.Clamp(fuel, 0, 100);
+
+		if (fuel <= 0) {
 			TrainSpeed = World.TrainSpeedSetting.Stop;
 		}
     }
