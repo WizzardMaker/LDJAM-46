@@ -103,6 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4497065741200546314}
   - component: {fileID: -383358603100052996}
+  - component: {fileID: 3987118973802116621}
   m_Layer: 0
   m_Name: CactusB
   m_TagString: Untagged
@@ -138,4 +139,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   returnToOtherSide: 0
-  startPos: {x: 0, y: 0, z: 0}
+--- !u!208 &3987118973802116621
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713640918490543133}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.6, z: 0}
+  m_TimeToStationary: 0.5

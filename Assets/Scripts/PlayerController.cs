@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject fuelObject;
 
+	public Revolver revolver;
+
 	public float speed, sprintMod = 2;
 
 	public bool transportsFuel = false;
@@ -30,5 +32,23 @@ public class PlayerController : MonoBehaviour {
 		c.SimpleMove(movement * speed * (Input.GetKey(KeyCode.LeftShift) ? sprintMod:1));
 
 		fuelObject.SetActive(transportsFuel);
+	}
+
+	private void Update() {
+		if (Input.GetMouseButtonDown(0)) {
+			revolver.FireGun();
+		}
+
+		if (Input.GetKeyDown(KeyCode.R)) {
+			revolver.Reload();
+		}
+
+		revolver.lookAtPos = revolver.bulletSpawnPos.transform.forward + revolver.bulletSpawnPos.transform.position;
+		Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1));
+		if (Physics.Raycast(ray, out RaycastHit info, Mathf.Infinity, LayerMask.GetMask("Default"))) {
+			revolver.lookAtPos = info.point;
+		}
+
+		//transform.LookAt(lookAtPos);
 	}
 }

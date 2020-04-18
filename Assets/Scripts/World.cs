@@ -21,6 +21,7 @@ public class World : MonoBehaviour {
 
 	public List<WorldObject> spawnPrefabs = new List<WorldObject>();
 	public List<Obstacle> obstaclesPrefabs = new List<Obstacle>();
+	public List<EnemyController> enemiesPrefabs = new List<EnemyController>();
 
 	public float minTimeForSpawn, maxTimeForSpawn;
 	public float minTimeForObstacle, maxTimeForObstacle;
@@ -30,6 +31,7 @@ public class World : MonoBehaviour {
 		instance = this;
 		StartCoroutine(RandomObjectSpawn());
 		StartCoroutine(RandomObstacleSpawn());
+		StartCoroutine(RandomEnemySpawn());
 	}
 
 	public IEnumerator RandomObjectSpawn() {
@@ -64,6 +66,22 @@ public class World : MonoBehaviour {
 			Obstacle o = Instantiate(obstaclesPrefabs[Random.Range(0, obstaclesPrefabs.Count)], transform);
 
 			o.transform.position = new Vector3(0, 0, worldLength / 2);
+		}
+	}
+	public IEnumerator RandomEnemySpawn() {
+		while (true) {
+			yield return new WaitForSeconds(Random.Range(minTimeForObstacle, maxTimeForObstacle) * (trainSpeed == TrainSpeedSetting.Slow ? .5f : 1));
+
+			if (obstaclesPrefabs.Count == 0)
+				break;
+
+
+			int waveSize = Random.Range(1,5);
+			for (int i = 0; i < waveSize; i++) {
+				EnemyController o = Instantiate(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Count)], transform);
+
+				o.transform.position = new Vector3(Random.Range(-worldWidth/2, worldWidth / 2), 0, -worldLength / 2);
+			}
 		}
 	}
 

@@ -10,7 +10,7 @@ public class Revolver : MonoBehaviour {
 	public AudioClip clickSound, shootSound;
 
 	public int bullets, maxBullets = 6;
-	Vector3 lookAtPos;
+	public Vector3 lookAtPos;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -19,21 +19,7 @@ public class Revolver : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-		if (Input.GetMouseButtonDown(0)) {
-			FireGun();
-		}
 
-		if (Input.GetKeyDown(KeyCode.R)) {
-			Reload();
-		}
-
-		lookAtPos = bulletSpawnPos.transform.forward + bulletSpawnPos.transform.position;
-		Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1));
-		if (Physics.Raycast(ray, out RaycastHit info, Mathf.Infinity, LayerMask.GetMask("Default"))) {
-			lookAtPos = info.point;
-		}
-
-		//transform.LookAt(lookAtPos);
     }
 
 	public void FireGun() {
