@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour {
 		if (Physics.Raycast(ray, out RaycastHit info, Mathf.Infinity, LayerMask.GetMask("Default"))) {
 			revolver.lookAtPos = info.point;
 		}
-
 		//transform.LookAt(lookAtPos);
 	}
 }

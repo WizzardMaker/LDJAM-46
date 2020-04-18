@@ -25,6 +25,7 @@ public class World : MonoBehaviour {
 
 	public float minTimeForSpawn, maxTimeForSpawn;
 	public float minTimeForObstacle, maxTimeForObstacle;
+	public float minTimeForEnemy, maxTimeForEnemy;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -70,7 +71,7 @@ public class World : MonoBehaviour {
 	}
 	public IEnumerator RandomEnemySpawn() {
 		while (true) {
-			yield return new WaitForSeconds(Random.Range(minTimeForObstacle, maxTimeForObstacle) * (trainSpeed == TrainSpeedSetting.Slow ? .5f : 1));
+			yield return new WaitForSeconds(Random.Range(minTimeForEnemy, maxTimeForEnemy) * (trainSpeed == TrainSpeedSetting.Slow ? .5f : 1));
 
 			if (obstaclesPrefabs.Count == 0)
 				break;

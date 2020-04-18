@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a964be8420cee9844a41f1842d6cc0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 120
+  lifetime: 8
+  timer: 0
 --- !u!54 &-2739887871114792162
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,7 +158,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.99867064, b: 0, a: 1}
+      key0: {r: 0, g: 0.107001305, b: 1, a: 1}
       key1: {r: 1, g: 0.7070736, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
