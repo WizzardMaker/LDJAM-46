@@ -117,12 +117,10 @@ public class Revolver : MonoBehaviour {
 		StartCoroutine(ReloadAnimation());
 	}
 
-	private void OnTriggerEnter(Collider other) {
+	private void OnTriggerStay(Collider other) {
 		isColliding = true;
-		Debug.Log("Ahh");
 	}
 	private void OnTriggerExit(Collider other) {
 		isColliding = false;
-		Debug.Log("Phew");
 	}
 }

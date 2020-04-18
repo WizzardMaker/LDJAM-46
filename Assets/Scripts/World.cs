@@ -18,6 +18,7 @@ public class World : MonoBehaviour {
 	public float actualSpeed;
 
 	public List<WorldObject> objects = new List<WorldObject>();
+	public List<Obstacle> obstacles = new List<Obstacle>();
 
 	public List<WorldObject> spawnPrefabs = new List<WorldObject>();
 	public List<Obstacle> obstaclesPrefabs = new List<Obstacle>();
