@@ -5,12 +5,16 @@ using UnityEngine;
 public class World : MonoBehaviour {
 	public static World instance;
 
+	public WindZone wind;
+
 	public float worldLength = 200, worldWidth = 80, trackWidth = 3;
+
+	public float distanceTraveled = 0;
 
 	public enum TrainSpeedSetting
 	{
 		Stop,
-		Slow = 5,
+		Slow = 10,
 		Fast = 20,
 	}
 
@@ -72,27 +76,46 @@ public class World : MonoBehaviour {
 	}
 	public IEnumerator RandomEnemySpawn() {
 		while (true) {
-			yield return new WaitForSeconds(Random.Range(minTimeForEnemy, maxTimeForEnemy) * (trainSpeed == TrainSpeedSetting.Slow ? .5f : 1));
+			yield return new WaitForSeconds(Random.Range(minTimeForEnemy, maxTimeForEnemy)* (trainSpeed == TrainSpeedSetting.Fast ? .01f : 1) * (trainSpeed == TrainSpeedSetting.Slow ? .5f : 1) * (trainSpeed == TrainSpeedSetting.Stop ? .3f : 1));
+			if (trainSpeed == TrainSpeedSetting.Fast)
+				continue;
 
-			if (obstaclesPrefabs.Count == 0)
-				break;
+			SpawnEnemies();
+		}
+	}
 
+	private void SpawnEnemies() {
+		int waveSize = Random.Range(1, 5);
+		for (int i = 0; i < waveSize; i++) {
+			EnemyController o = Instantiate(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Count)], transform);
 
-			int waveSize = Random.Range(1,5);
-			for (int i = 0; i < waveSize; i++) {
-				EnemyController o = Instantiate(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Count)], transform);
-
-				o.transform.position = new Vector3(Random.Range(-worldWidth/2, worldWidth / 2), 0, -worldLength / 2);
-			}
+			o.transform.position = new Vector3(Random.Range(-worldWidth / 2, worldWidth / 2), 0, -130);
 		}
 	}
 
 	// Update is called once per frame
 	void Update() {
+		if (PauseMenu.isPaused)
+			return;
 		actualSpeed = Mathf.SmoothStep(actualSpeed, (float)trainSpeed, Time.deltaTime * 4 * (trainSpeed == TrainSpeedSetting.Stop ? 2 :1));
 
-        foreach(WorldObject o in objects) {
+		float windSpeed = Remap(actualSpeed, 0, 20, 0, 30);
+		wind.windMain = windSpeed;
+
+		distanceTraveled += actualSpeed * Time.deltaTime;
+		foreach (WorldObject o in objects) {
 			o.transform.position -= Vector3.forward * actualSpeed * Time.deltaTime;
 		}
+
+		if(TrainController.instance.fuel <= 0 || TrainController.instance.health <= 0 || PlayerController.instance.health <= 0) {
+			UIManager.deathReason = (TrainController.instance.fuel <= 0 ? "Your flame went out! You didn't have enough fuel!" : TrainController.instance.health <= 0 ? "Your flame went out! The train was too damaged!" : PlayerController.instance.health <= 0 ? "You died!" : "");
+			UIManager.deathReason = $"Traveled distance: {(int)distanceTraveled}m\n" + UIManager.deathReason;
+
+			UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
+		}
     }
+
+	public static float Remap(float value, float from1, float to1, float from2, float to2) {
+		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+	}
 }

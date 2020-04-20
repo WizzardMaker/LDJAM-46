@@ -9,7 +9,10 @@ public class Destroyable : MonoBehaviour {
 		health--;
 		Debug.Log($"Hit! Object: {gameObject.name}");
 
-		if (health <= 0)
+		if (health <= 0) {
+			GetComponent<Obstacle>()?.DestroyInParts();
 			Destroy(gameObject);
+
+		}
 	}
 }

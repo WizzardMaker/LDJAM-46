@@ -17,7 +17,7 @@ public class ObstacleLight : MonoBehaviour {
 
 	IEnumerator ManageLight() {
 		while (true) {
-			yield return new WaitUntil(() => World.instance.obstacles.Count > 0);
+			yield return new WaitUntil(() => World.instance.obstacles.Count > 0 && World.instance.obstacles.FirstOrDefault()?.transform.position.z <120);
 
 			float t = 0;
 			while(t < 1) {

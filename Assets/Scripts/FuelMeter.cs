@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceFuelMeter : MonoBehaviour, IInteractable
+public class FuelMeter : MonoBehaviour, IInteractable
 {
+	public GameObject meter;
+
 	public string GetText() {
-		return $"{(int)TrainController.instance.fuel}m until next Station";
+		return $"Remaining fuel {(int)TrainController.instance.fuel}%";
 	}
 
 	public void Interact() {
 
+	}
+
+	public void Update() {
+		float angle = World.Remap(TrainController.instance.fuel, 0, 100, -80, 80);
+
+		meter.transform.localRotation = Quaternion.Euler(-90, 0, angle);
 	}
 }

@@ -6,16 +6,23 @@ public class Bullet : MonoBehaviour {
 	public float speed;
 	Collider c;
 
+	public GameObject hitSparks;
+
 	public float lifetime = 8;
 	public float timer;
 
 	public bool isPlayerFired = false;
 
+	int layerMask;
+
     // Start is called before the first frame update
     void Start() {
 		c = GetComponentInChildren<Collider>();
 		timer = Time.time + lifetime;
-    }
+
+		layerMask = GetLayerMask();
+
+	}
 
 	public int GetLayerMask() {
 		int myLayer = gameObject.layer;
@@ -31,11 +38,14 @@ public class Bullet : MonoBehaviour {
 	}
 
     // Update is called once per frame
-    void Update() {
-		transform.position += transform.forward * speed * Time.deltaTime;
+    void FixedUpdate() {
+		if (PauseMenu.isPaused)
+			return;
 
-		if(Physics.Raycast(transform.position, transform.forward,out RaycastHit info, speed * Time.deltaTime * 2, GetLayerMask())) {
-			Hit(info.collider, info.point);
+		transform.position += transform.forward * speed * Time.fixedDeltaTime;
+
+		if(Physics.Raycast(transform.position - transform.forward* speed * Time.fixedDeltaTime, transform.forward,out RaycastHit info, speed * Time.fixedDeltaTime, layerMask)) {
+			Hit(info.collider, info.point, info.normal);
 		}
 
 		if(Time.time > timer) {
@@ -43,18 +53,25 @@ public class Bullet : MonoBehaviour {
 		}
     }
 
-	private void Hit(Collider collider, Vector3 hitPos) {
-		Debug.Log($"Hit! Collider: {collider.gameObject.name}");
-
+	private void Hit(Collider collider, Vector3 hitPos, Vector3 hitNormal) {
 		Destroyable a = collider.GetComponentInParent<Destroyable>();
 		a?.BulletHit();
 
 		PlayerController p = collider.GetComponentInParent<PlayerController>();
 		p?.BulletHit(hitPos);
 
-		if(a != null) {
+		if (!isPlayerFired) {
+			TrainController t = collider.GetComponentInParent<TrainController>();
+			t?.Hit(1);
+		}
+
+		if (a != null) {
 			PlayerController.instance.HasHitTarget();
 		}
+
+		GameObject g = Instantiate(hitSparks);
+		g.transform.position = hitPos;
+		g.transform.rotation = Quaternion.Euler(hitNormal);
 
 		Destroy(gameObject);
 	}

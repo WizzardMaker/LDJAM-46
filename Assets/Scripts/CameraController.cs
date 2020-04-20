@@ -12,11 +12,12 @@ public class CameraController : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
 		c = GetComponentInChildren<Camera>();
-		Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update() {
+		if (PauseMenu.isPaused)
+			return;
 
 		lookAngle.x += Input.GetAxis("Mouse Y") * verSpeed * sensitivity * Time.deltaTime;
 		//lookUp.x = ClampAngle(lookUp.x, -60, 60);

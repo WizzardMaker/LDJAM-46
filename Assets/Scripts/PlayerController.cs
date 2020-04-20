@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	public static PlayerController instance;
 
+	public float health = 20;
+
 	[HideInInspector]
 	public CharacterController c;
 
@@ -48,13 +50,23 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (PauseMenu.isPaused)
+			return;
+
 		if (Input.GetMouseButtonDown(0)) {
-			revolver.FireGun();
+			if(revolver.FireGun(true))
+				AmmoUI.instance.Fire();
 		}
 
 		if (Input.GetKeyDown(KeyCode.R)) {
-			revolver.Reload();
+			if (revolver.Reload())
+				AmmoUI.instance.Reload();
 		}
+
+		c.height = Input.GetKey(KeyCode.LeftControl) ? 1f : 2;
+
+		health += Time.deltaTime * 1f;
+		health = Mathf.Clamp(health, 0, 20);
 
 		revolver.lookAtPos = revolver.bulletSpawnPos.transform.forward + revolver.bulletSpawnPos.transform.position;
 		//Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1));
@@ -78,7 +90,8 @@ public class PlayerController : MonoBehaviour {
 		} else { //to the side
 			StartCoroutine(ShowHitSide(0 + leftRight));
 		}
-	
+
+		health -= 4;
 	}
 
 	public IEnumerator ShowHitSide(int index) {
@@ -86,9 +99,9 @@ public class PlayerController : MonoBehaviour {
 
 		bool isSide = index < 2;
 
-		Vector3 old = new Vector3(1, sign, 1);
+		Vector3 old = new Vector3(1, sign, 1)*2;
 		if (isSide)
-			old = new Vector3(sign, 1, 1);
+			old = new Vector3(sign, 1, 1)*2;
 
 		Vector3 newScale = new Vector3(0, 0, 0);
 
